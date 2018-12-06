@@ -1,0 +1,5 @@
+<!--index.wxml-->
+<view class="container" catchtap="videoPlay" bindtouchstart="touchStart" bindtouchmove="touchMove" bindtouchend="touchEnd" bindtouchcancel="touchCancel">
+  <video class="vvideo" id="kdvideo" src="{{srcList[videoIndex]}}" autoplay="true" bindplay="bindplay" controls="{{controls}}" loop="true"></video>
+  <image class="play-btn" wx:if="{{!playState}}" src="../../icons/play.png"></image>
+</view>
