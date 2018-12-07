@@ -20,3 +20,15 @@ page {
   height: 128rpx;
   width: 128rpx;
 }
+.animation-wrapper {
+  height: 100vh;
+  width: 100vw;
+}
+.animation-image {
+  height: 100vh;
+  width: 100vw;
+  display: block;
+}
+.animationPre {
+  transform: translateY(-100%);
+}

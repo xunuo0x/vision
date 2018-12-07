@@ -1,5 +1,9 @@
 <!--index.wxml-->
-<view class="container" catchtap="videoPlay" bindtouchstart="touchStart" bindtouchmove="touchMove" bindtouchend="touchEnd" bindtouchcancel="touchCancel">
-  <video class="vvideo" id="kdvideo" src="{{srcList[videoIndex]}}" autoplay="true" bindplay="bindplay" controls="{{controls}}" loop="true"></video>
+<view class="container" catchtap="changePlayStatus" bindtouchstart="touchStart" bindtouchend="touchEnd" bindtouchcancel="touchCancel">
+  <view class="animation-wrapper" hidden="{{animationShow}}" animation="{{animation}}">
+    <image mode="aspectFill" class="animation-image {{ animationPre ? 'animationPre':''}}" src="{{animationImage1}}"></image>
+    <image mode="aspectFill" class="animation-image {{ animationPre ? 'animationPre':''}}" src="{{animationImage2}}"></image>
+  </view>
+  <video class="vvideo" id="kdvideo" hidden="{{!animationShow}}" src="{{videos[videoIndex].videoUrl}}" bindplay="bindplay" controls="{{controls}}" loop="true"></video>
   <image class="play-btn" wx:if="{{!playState}}" src="../../icons/play.png"></image>
 </view>
