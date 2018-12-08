@@ -2,18 +2,12 @@
 //获取应用实例
 import * as event from '../../utils/event.js'
 const app = getApp()
-const touchStarting = {
-  clientX: 0,
-  clientY: 0
-}
-const windowHeight = wx.getSystemInfoSync().windowHeight;
+const windowHeight = wx.getSystemInfoSync().windowHeight
 
 Page({
   data: {
-    motto: 'Hello World',
-    userInfo: {},
-    hasUserInfo: false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo'),
+    percent: 1,
+    autoplay: true,
     controls: false,
     showFullscreenBtn: false,
     showPlayBtn: false,
@@ -22,7 +16,9 @@ Page({
     enableProgressGesture: false,
     showProgress: false,
     playState: true,
-    animationShow: true,
+    animationShow: false,
+    currentTranslateY: 0,
+    touchStartingY: 0,
     videos: [
       {
         videoUrl: "http://v.kandian.qq.com/shg_753067649_1047_04b4dd8dc4b646e6a88aaa66dad2vide.f20.mp4?dis_k=a613a086491dc11011c995dfed9800e1&dis_t=1544012470",
@@ -30,63 +26,64 @@ Page({
         poster: "http://qqpublic.qpic.cn/qq_public_cover/0/0-10000-43EA9FAEE70685E641983C69711ECD58_vsmcut/600"
       },
       {
-        videoUrl: "http://v.kd1.qq.com/shg_321_1116_5X00000000000000000000000002Dxan.f822.mp4?dis_k=c4d1d9d7ea4238b0ecb8484fb46111a6&dis_t=1544187088",
+        videoUrl: "http://v.kd1.qq.com/shg_321_1116_22X0000000kr5lQbeN0Js5bfe4775354.f822.mp4?dis_k=f6678626efce7fac87260eb9adc94939&dis_t=1544232669",
         durations: 10,
-        poster: "http://qqpublic.qpic.cn/qq_public_cover/0/0-10000-5F65D00D480EB888EEF0E4451E8EEED1_vsmcut/600"
+        poster: "http://qqpublic.qpic.cn/qq_public_cover/0/0-10000-C0227B64F7428B0EC9AA0FA26151179C_vsmcut/600"
       },
       {
-        videoUrl: "http://v.kd1.qq.com/shg_321_1116_5X0000000000000000000000000D4Vzo.f822.mp4?dis_k=d327905a47374786078f81fe4e830724&dis_t=1544185708",
+        videoUrl: "http://v.kd1.qq.com/shg_321_1116_22X0000000jmAye1Rbhml5c029b4b972.f822.mp4?dis_k=d1cbe54b6ca65b3ec4e0b14f9d2d54f9&dis_t=1544240448",
         durations: 10,
-        poster: "http://qqpublic.qpic.cn/qq_public_cover/0/0-10000-40401D133F806549B490F75821C0AEDC_vsmcut/600"
+        poster: "http://qqpublic.qpic.cn/qq_public_cover/0/0-10000-61BD7E767F36BECB198B892ACBC1279F_vsmcut/600"
+      },
+      {
+        videoUrl: 'http://v.kd1.qq.com/shg_321_1116_6X000000000000000000000000rvt8ZO.f822.mp4?dis_k=b82f176eba0768f359d3b3199ecd5746&dis_t=1544252570',
+        durations: 10,
+        poster: "http://qqpublic.qpic.cn/qq_public_cover/0/0-10000-94F24F895093DE70E3621835536A1549_vsmcut/600"
       }
-    ],
-    srcList: [
-      "http://v.kandian.qq.com/shg_753067649_1047_04b4dd8dc4b646e6a88aaa66dad2vide.f20.mp4?dis_k=a613a086491dc11011c995dfed9800e1&dis_t=1544012470",
-      "http://v.kd1.qq.com/shg_321_1116_6X000000000000000000000000r5CNnE.f822.mp4?dis_k=6f0206b7c0c286a102fb43f494bd4331&dis_t=1544152873",
-      "http://v.kd1.qq.com/shg_321_1116_6X000000000000000000000000tjvfuC.f822.mp4?dis_k=92fb699912070692e3420c62f8c49f83&dis_t=1544153942"
     ],
     videoIndex: 0,
     objectFit: "contain"
   },
-  bindplay: function() {
-  },
   onLoad: function () {
-    this.vvideo = wx.createVideoContext("kdvideo", this)
-    this.videoChange = throttle(this.touchMoveHandler, 200)
+    // 滑动
+    this.videoChange = throttle(this.touchEndHandler, 200)
     // 绑定updateVideoIndex事件，更新当前播放视频index
     event.on('updateVideoIndex', this, function (index) {
       console.log('event updateVideoIndex:', index)
       setTimeout(() => {
-        this.animation.translateY(0).step()
         this.setData({
-          animationShow: true,
-          animation: this.animation.export(),
-          animationImage1: '',
-          animationImage2: '',
-          animationPre: false
+          animationShow: false,
+          playState: true
+        }, ()=> {
+          // 切换src后，video不能立即播放，settimeout一下
+          setTimeout(()=> {
+            this.vvideo.play()
+          },100)
         })
-      }, 800)
+      }, 600)
+    })
+  },
+  bindplay() {
+    console.log('--- video play ---')
+  },
+  binderror(err) {
+    console.log(err)
+  },
+  bindtimeupdate(e) {
+    let percent = (e.detail.currentTime / e.detail.duration)*100
+    this.setData({
+      percent: percent.toFixed(2)
     })
   },
   onReady: function () {
+    this.vvideo = wx.createVideoContext("kdvideo", this)
     this.animation = wx.createAnimation({
       duration: 500,
       transformOrigin: '0 0 0'
     })
   },
-  videoPlay: function(index) {
-    this.vvideo.play()
-    let playState = !this.data.playState
-    if (playState === true) {
-      vvideo.play()
-    } else {
-      vvideo.pause()
-    }
-    this.setData({
-      playState: playState
-    })
-  },
   changePlayStatus() {
+    console.log('changePlayStatus')
     let playState = !this.data.playState
     if (playState) {
       this.vvideo.play()
@@ -98,55 +95,62 @@ Page({
     })
   },
   touchStart(e) {
+    let touchStartingY = this.data.touchStartingY
     console.log('------touchStart------')
-    touchStarting.clientX = e.touches[0].clientX
-    touchStarting.clientY = e.touches[0].clientY
-    console.log(touchStarting)
+    touchStartingY = e.touches[0].clientY
+    this.setData({
+      touchStartingY: touchStartingY
+    })
   },
   touchMove(e) {
     // this.videoChange(e)
   },
   touchEndHandler(e) {
-    if (index === 0 || index === this.data.videos.length - 1) {
-      return
-    }
-    let deltaY = e.changedTouches[0].clientY - touchStarting.clientY
+    let touchStartingY = this.data.touchStartingY
+    let deltaY = e.changedTouches[0].clientY - touchStartingY
     console.log('deltaY ',deltaY)
 
     let index = this.data.videoIndex
     if (deltaY > 100 && index !== 0) {
       // 更早地设置 animationShow
       this.setData({
-        animationPre: true,
-        animationShow: false
+        animationShow: true
       }, () => {
         console.log('-1 切换')
-        this.createAnimation(1, index).then((res) => {
-          this.animation.translateY(res.direction * windowHeight).step()
+        this.createAnimation(-1, index).then((res) => {
+          console.log(res)
           this.setData({
-            animation: this.animation.export()
+            animation: this.animation.export(),
+            videoIndex: res.index,
+            currentTranslateY: res.currentTranslateY,
+            percent: 1
+          }, () => {
+            event.emit('updateVideoIndex', res.index)
           })
-          event.emit('updateVideoIndex', res.index)
         })
       })
-    } else if (deltaY < -100 && index !== (this.data.srcList.length - 1)) {
+    } else if (deltaY < -100 && index !== (this.data.videos.length - 1)) {
       this.setData({
-        animationShow: false
-      })
-      console.log('+1 切换')
-      this.createAnimation(-1, index).then((res) => {
-        console.log(res.direction)
-        this.animation.translateY(res.direction * windowHeight).step()
-        this.setData({
-          animation: this.animation.export()
+        animationShow: true
+      }, () => {
+        console.log('+1 切换')
+        this.createAnimation(1, index).then((res) => {
+          console.log(res)
+          this.setData({
+            animation: this.animation.export(),
+            videoIndex: res.index,
+            currentTranslateY: res.currentTranslateY,
+            percent: 1
+          }, () => {
+            event.emit('updateVideoIndex', res.index)
+          })
         })
-        event.emit('updateVideoIndex', res.index)
-      })
+      })   
     }
   },
   touchEnd(e) {
     console.log('------touchEnd------')
-    this.touchEndHandler(e)
+    this.videoChange(e)
   },
   touchCancel(e) {
     console.log('------touchCancel------')
@@ -156,29 +160,19 @@ Page({
     // direction为-1，向上滑动，animationImage1为(index)的poster，animationImage2为(index+1)的poster
     // direction为1，向下滑动，animationImage1为(index-1)的poster，animationImage2为(index)的poster
     let videos = this.data.videos
-    let animationImage1 = ''
-    let animationImage2 = ''
+    let currentTranslateY = this.data.currentTranslateY
     console.log('direction ', direction)
     console.log('index ', index)
-    if (direction > 0) {
-      // 向下滑
-      animationImage1 = videos[index - 1].poster
-      animationImage2 = videos[index].poster
-      index -= 1
-    } else {
-      // 向上滑
-      animationImage1 = videos[index].poster
-      animationImage2 = videos[index + 1].poster
-      index += 1
-    }
-    this.setData({
-      animationImage1: animationImage1,
-      animationImage2: animationImage2,
-      videoIndex: index
-    })
+    
+    // 更新 videoIndex
+    index += direction
+    currentTranslateY += -direction*windowHeight
+    console.log('currentTranslateY: ', currentTranslateY)
+    this.animation.translateY(currentTranslateY).step()
+
     return Promise.resolve({
       index: index,
-      direction: direction
+      currentTranslateY: currentTranslateY
     })
   }
 })

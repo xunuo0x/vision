@@ -11,6 +11,9 @@ page {
 .vvideo {
   height: 100vh;
   width: 100vw;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 .play-btn {
   position: absolute;
@@ -20,9 +23,18 @@ page {
   height: 128rpx;
   width: 128rpx;
 }
+.progress {
+  position: absolute;
+  left: 0;
+  bottom: 60px;
+  height: 4px;
+  width: 100vw;
+}
 .animation-wrapper {
+  position: relative;
   height: 100vh;
   width: 100vw;
+  background-color: #000;
 }
 .animation-image {
   height: 100vh;

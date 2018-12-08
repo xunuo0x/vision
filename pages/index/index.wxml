@@ -1,9 +1,13 @@
 <!--index.wxml-->
 <view class="container" catchtap="changePlayStatus" bindtouchstart="touchStart" bindtouchend="touchEnd" bindtouchcancel="touchCancel">
-  <view class="animation-wrapper" hidden="{{animationShow}}" animation="{{animation}}">
-    <image mode="aspectFill" class="animation-image {{ animationPre ? 'animationPre':''}}" src="{{animationImage1}}"></image>
-    <image mode="aspectFill" class="animation-image {{ animationPre ? 'animationPre':''}}" src="{{animationImage2}}"></image>
+  <view class="animation-wrapper" animation="{{animation}}">
+    <block wx:for="{{videos}}" wx:key="{{item.videoUrl}}">
+      <view class="animation-image-wrapper">
+        <image mode="aspectFill" class="animation-image" src="{{item.poster}}"></image>
+      </view>
+    </block>
   </view>
-  <video class="vvideo" id="kdvideo" hidden="{{!animationShow}}" src="{{videos[videoIndex].videoUrl}}" bindplay="bindplay" controls="{{controls}}" loop="true"></video>
-  <image class="play-btn" wx:if="{{!playState}}" src="../../icons/play.png"></image>
+  <video class="vvideo" bindtimeupdate="bindtimeupdate" id="kdvideo" binderror="binderror" autoplay="{{autoplay}}" objectFit="fill" hidden="{{animationShow}}" src="{{videos[videoIndex].videoUrl}}" bindplay="bindplay" controls="{{controls}}" loop="true"></video>
+  <image class="play-btn" wx:if="{{!playState && !animationShow}}" src="../../icons/play.png"></image>
+  <progress class="progress" percent="{{percent}}" activeColor="#ffffff" backgroundColor="#A9A9A9" stroke-width="1"  wx:if="{{!animationShow}}" />
 </view>
