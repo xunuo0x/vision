@@ -21,24 +21,24 @@ Page({
     touchStartingY: 0,
     videos: [
       {
-        videoUrl: "http://v.kandian.qq.com/shg_753067649_1047_04b4dd8dc4b646e6a88aaa66dad2vide.f20.mp4?dis_k=a613a086491dc11011c995dfed9800e1&dis_t=1544012470",
+        videoUrl: "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=v0200faf0000bg5joco1ahq89k7ik9j0&line=0",
         durations: 10,
-        poster: "http://qqpublic.qpic.cn/qq_public_cover/0/0-10000-43EA9FAEE70685E641983C69711ECD58_vsmcut/600"
+        poster: "https://p3.pstatp.com/large/131040001488de047292a.jpg"
       },
       {
-        videoUrl: "http://v.kd1.qq.com/shg_321_1116_22X0000000kr5lQbeN0Js5bfe4775354.f822.mp4?dis_k=f6678626efce7fac87260eb9adc94939&dis_t=1544232669",
+        videoUrl: "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=v0200f2f0000bg2dbhb6j2qj3mr8pa9g&line=0",
         durations: 10,
-        poster: "http://qqpublic.qpic.cn/qq_public_cover/0/0-10000-C0227B64F7428B0EC9AA0FA26151179C_vsmcut/600"
+        poster: "https://p1.pstatp.com/large/12bea0008f8a226fc53c3.jpg"
       },
       {
-        videoUrl: "http://v.kd1.qq.com/shg_321_1116_22X0000000jmAye1Rbhml5c029b4b972.f822.mp4?dis_k=d1cbe54b6ca65b3ec4e0b14f9d2d54f9&dis_t=1544240448",
+        videoUrl: "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=v0200fce0000bg36q72j2boojh1t030g&line=0",
         durations: 10,
-        poster: "http://qqpublic.qpic.cn/qq_public_cover/0/0-10000-61BD7E767F36BECB198B892ACBC1279F_vsmcut/600"
+        poster: "https://p99.pstatp.com/large/12c5c0009891b32e947b7.jpg"
       },
       {
-        videoUrl: 'http://v.kd1.qq.com/shg_321_1116_6X000000000000000000000000rvt8ZO.f822.mp4?dis_k=b82f176eba0768f359d3b3199ecd5746&dis_t=1544252570',
+        videoUrl: "https://aweme.snssdk.com/aweme/v1/playwm/?video_id=v0300fd10000bfrb9mlpimm72a92fsj0&line=0",
         durations: 10,
-        poster: "http://qqpublic.qpic.cn/qq_public_cover/0/0-10000-94F24F895093DE70E3621835536A1549_vsmcut/600"
+        poster: "https://p99.pstatp.com/large/12246000525d4c87900e7.jpg"
       }
     ],
     videoIndex: 0,
@@ -60,7 +60,7 @@ Page({
             this.vvideo.play()
           },100)
         })
-      }, 600)
+      }, 500)
     })
   },
   bindplay() {
